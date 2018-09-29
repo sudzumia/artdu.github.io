@@ -122,7 +122,7 @@ function initMap() {
                 marker = new google.maps.Marker({
                     position: newPoint,
                     map: map,
-                    icon: "https://maps.google.com/mapfiles/kml/shapes/info.icon"
+                    icon: "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png"
                 });
 
 
