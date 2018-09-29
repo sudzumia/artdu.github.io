@@ -12,7 +12,6 @@ function initMap() {
         center: new google.maps.LatLng(-33.863276, 151.207977),
         zoom: 12,
         disableDefaultUI: true,
-        center: new google.maps.LatLng(2.8,-187.3),
         mapTypeId: 'terrain',
         styles: [
             {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
@@ -97,6 +96,26 @@ function initMap() {
     });
     infoWindow = new google.maps.InfoWindow;
 
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+        }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+
     // Change this depending on the name of your PHP or XML file
     downloadUrl('https://storage.googleapis.com/mapsdevsite/json/mapmarkers2.xml', function(data) {
         var xml = data.responseXML;
@@ -148,6 +167,14 @@ function downloadUrl(url, callback) {
 
     request.open('GET', url, true);
     request.send(null);
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
 }
 
 function doNothing() {}
