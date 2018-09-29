@@ -149,7 +149,7 @@
 <script>
     $.ajax({
         dataType: 'json',
-        url: 'http://c6b06b47.ngrok.io/execute?lat=5&lon=3',
+        url: 'https://c6b06b47.ngrok.io/execute?lat=5&lon=3',
         success: function(jsondata){
             $('.results').html('Name = ' + jsondata.name + ', Nickname = ' + jsondata.nickname);
         }
