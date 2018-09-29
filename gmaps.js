@@ -10,7 +10,7 @@ var customLabel = {
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(-33.863276, 151.207977),
-        zoom: 12,
+        zoom: 15,
         disableDefaultUI: true,
         mapTypeId: 'terrain',
         styles: [
