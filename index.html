@@ -151,7 +151,7 @@
         dataType: 'json',
         url: 'https://c6b06b47.ngrok.io/execute?lat=5&lon=3',
         success: function(jsondata){
-            $('.results').html('Name = ' + jsondata.name + ', Nickname = ' + jsondata.nickname);
+            console.log(jsondata);
         }
     });
 
