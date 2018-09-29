@@ -122,7 +122,7 @@ function initMap() {
                 marker = new google.maps.Marker({
                     position: newPoint,
                     map: map,
-                    icon: "https://cdn2.iconfinder.com/data/icons/finance-solid-icons-vol-3/48/106-512.png"
+                    //icon: "https://cdn2.iconfinder.com/data/icons/finance-solid-icons-vol-3/48/106-512.png"
                 });
 
 
