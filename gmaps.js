@@ -117,26 +117,20 @@ function initMap() {
             };
 
 
-            if (marker) {
-                // Marker already created - Move it
-                marker.setPosition(newPoint);
 
-            }
-            else {
                 // Marker does not exist - Create it
                 marker = new google.maps.Marker({
                     position: newPoint,
                     map: map,
                     type: 'info'
                 });
-            }
+
 
             // Center the map on the new position
             map.setCenter(newPoint);
         });
 
-        // Call the autoUpdate() function every 5 seconds
-        setTimeout(autoUpdate, 5000);
+
     }
 
     autoUpdate();
