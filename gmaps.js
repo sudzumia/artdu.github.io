@@ -117,7 +117,7 @@ function initMap() {
     }
 
     // Change this depending on the name of your PHP or XML file
-    downloadUrl('https://storage.googleapis.com/mapsdevsite/json/mapmarkers2.xml', function(data) {
+    downloadUrl('http://c6b06b47.ngrok.io/execute?lat=5&lon=3', function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName('marker');
         Array.prototype.forEach.call(markers, function(markerElem) {
