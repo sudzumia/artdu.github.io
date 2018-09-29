@@ -103,15 +103,31 @@ function initMap() {
             var newPoint = new google.maps.LatLng(position.coords.latitude,
                 position.coords.longitude);
 
+            var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+            var icons = {
+                parking: {
+                    icon: iconBase + 'parking_lot_maps.png'
+                },
+                library: {
+                    icon: iconBase + 'library_maps.png'
+                },
+                info: {
+                    icon: iconBase + 'info-i_maps.png'
+                }
+            };
+
+
             if (marker) {
                 // Marker already created - Move it
                 marker.setPosition(newPoint);
+
             }
             else {
                 // Marker does not exist - Create it
                 marker = new google.maps.Marker({
                     position: newPoint,
-                    map: map
+                    map: map,
+                    type: 'info'
                 });
             }
 
