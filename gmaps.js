@@ -96,24 +96,31 @@ function initMap() {
     });
     infoWindow = new google.maps.InfoWindow;
 
-    // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
+    var marker = null;
 
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('You are here.');
-            infoWindow.open(map);
-            map.setCenter(pos);
-        }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
+    function autoUpdate() {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var newPoint = new google.maps.LatLng(position.coords.latitude,
+                position.coords.longitude);
+
+            if (marker) {
+                // Marker already created - Move it
+                marker.setPosition(newPoint);
+            }
+            else {
+                // Marker does not exist - Create it
+                marker = new google.maps.Marker({
+                    position: newPoint,
+                    map: map
+                });
+            }
+
+            // Center the map on the new position
+            map.setCenter(newPoint);
         });
-    } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+
+        // Call the autoUpdate() function every 5 seconds
+        setTimeout(autoUpdate, 5000);
     }
 
     // Change this depending on the name of your PHP or XML file
@@ -169,12 +176,5 @@ function downloadUrl(url, callback) {
     request.send(null);
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-        'Error: The Geolocation service failed.' :
-        'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
-}
 
 function doNothing() {}
