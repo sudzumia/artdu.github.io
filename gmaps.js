@@ -1,10 +1,17 @@
+var customLabel = {
+    restaurant: {
+        label: 'R'
+    },
+    bar: {
+        label: 'B'
+    }
+};
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 6,
+        center: new google.maps.LatLng(-33.863276, 151.207977),
+        zoom: 12,
         disableDefaultUI: true,
-        zoom: 2,
         center: new google.maps.LatLng(2.8,-187.3),
         mapTypeId: 'terrain',
         styles: [
@@ -90,23 +97,57 @@ function initMap() {
     });
     infoWindow = new google.maps.InfoWindow;
 
-    // Create a <script> tag and set the USGS URL as the source.
-    var script = document.createElement('script');
-    // This example uses a local copy of the GeoJSON stored at
-    // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
-    script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
-    document.getElementsByTagName('head')[0].appendChild(script);
+    // Change this depending on the name of your PHP or XML file
+    downloadUrl('https://storage.googleapis.com/mapsdevsite/json/mapmarkers2.xml', function(data) {
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName('marker');
+        Array.prototype.forEach.call(markers, function(markerElem) {
+            var id = markerElem.getAttribute('id');
+            var name = markerElem.getAttribute('name');
+            var address = markerElem.getAttribute('address');
+            var type = markerElem.getAttribute('type');
+            var point = new google.maps.LatLng(
+                parseFloat(markerElem.getAttribute('lat')),
+                parseFloat(markerElem.getAttribute('lng')));
+
+            var infowincontent = document.createElement('div');
+            var strong = document.createElement('strong');
+            strong.textContent = name
+            infowincontent.appendChild(strong);
+            infowincontent.appendChild(document.createElement('br'));
+
+            var text = document.createElement('text');
+            text.textContent = address
+            infowincontent.appendChild(text);
+            var icon = customLabel[type] || {};
+            var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+                label: icon.label
+            });
+            marker.addListener('click', function() {
+                infoWindow.setContent(infowincontent);
+                infoWindow.open(map, marker);
+            });
+        });
+    });
 }
 
-// Loop through the results array and place a marker for each
-// set of coordinates.
-window.eqfeed_callback = function(results) {
-    for (var i = 0; i < results.features.length; i++) {
-        var coords = results.features[i].geometry.coordinates;
-        var latLng = new google.maps.LatLng(coords[1], coords[0]);
-        var marker = new google.maps.Marker({
-            position: latLng,
-            map: map
-        });
-    }
+
+function downloadUrl(url, callback) {
+    var request = window.ActiveXObject ?
+        new ActiveXObject('Microsoft.XMLHTTP') :
+        new XMLHttpRequest;
+
+    request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+            request.onreadystatechange = doNothing;
+            callback(request, request.status);
+        }
+    };
+
+    request.open('GET', url, true);
+    request.send(null);
 }
+
+function doNothing() {}
