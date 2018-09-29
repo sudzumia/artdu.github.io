@@ -20,6 +20,8 @@
 </head>
 <body>
 <div id="map"></div>
+
+<div class="result"></div>
 <script>
 
 
@@ -139,6 +141,20 @@
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxmrrMzw6nTpY10QW1n3O5DuY64r-OkVA&callback=initMap">
+</script>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+<script>
+    $.ajax({
+        dataType: 'json',
+        url: 'http://c6b06b47.ngrok.io/execute?lat=5&lon=3',
+        success: function(jsondata){
+            $('.results').html('Name = ' + jsondata.name + ', Nickname = ' + jsondata.nickname);
+        }
+    });
+
 </script>
 </body>
 </html>
