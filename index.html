@@ -21,28 +21,13 @@
 <body>
 <div id="map"></div>
 <script>
-    // Note: This example requires that you consent to location sharing when
-    // prompted by your browser. If you see the error "The Geolocation service
-    // failed.", it means you probably did not give permission for the browser to
-    // locate you.
-    var map, infoWindow;
-    function showPosition(){
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(function(position){
-                var positionInfo = "Your current position is (" + "Latitude: " + position.coords.latitude + ", " + "Longitude: " + position.coords.longitude + ")";
-                console.log(positionInfo);
-            });
-        } else{
-            alert("Sorry, your browser does not support HTML5 geolocation.");
-        }
-    }
 
-    showPosition();
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -34.397, lng: 150.644},
-            zoom: 6
+            zoom: 6,
+            disableDefaultUI: true
         });
         infoWindow = new google.maps.InfoWindow;
 
