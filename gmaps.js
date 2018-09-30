@@ -97,12 +97,12 @@ function initMap() {
     infoWindow = new google.maps.InfoWindow;
 
     var marker = null;
-
     function autoUpdate() {
         navigator.geolocation.getCurrentPosition(function(position) {
             var newPoint = new google.maps.LatLng(position.coords.latitude,
                 position.coords.longitude);
-
+            console.log(position.coords.latitude,
+                position.coords.longitude);
             var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
             var icons = {
                 parking: {
@@ -135,17 +135,17 @@ function initMap() {
 
     autoUpdate();
     // Change this depending on the name of your PHP or XML file
-    /*downloadUrl('https://c6b06b47.ngrok.io/execute?lat=5&lon=3', function(data) {
+    downloadUrl('https://9e3ea589.ngrok.io/execute?lat='+55.8131767+'&lon='+37.494864899999996, function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName('marker');
         Array.prototype.forEach.call(markers, function(markerElem) {
             var id = markerElem.getAttribute('id');
-            var name = markerElem.getAttribute('name');
-            var address = markerElem.getAttribute('address');
-            var type = markerElem.getAttribute('type');
+            var name = markerElem.getAttribute('title');
+            var description = 'Расстояние: ' + markerElem.getAttribute('distance')+' метров. \n';            
+            description += markerElem.getAttribute('description');
             var point = new google.maps.LatLng(
                 parseFloat(markerElem.getAttribute('lat')),
-                parseFloat(markerElem.getAttribute('lng')));
+                parseFloat(markerElem.getAttribute('lon')));
 
             var infowincontent = document.createElement('div');
             var strong = document.createElement('strong');
@@ -154,9 +154,9 @@ function initMap() {
             infowincontent.appendChild(document.createElement('br'));
 
             var text = document.createElement('text');
-            text.textContent = address
+            text.textContent = description
             infowincontent.appendChild(text);
-            var icon = customLabel[type] || {};
+            var icon = {};
             var marker = new google.maps.Marker({
                 map: map,
                 position: point,
@@ -167,7 +167,7 @@ function initMap() {
                 infoWindow.open(map, marker);
             });
         });
-    });*/
+    });
 }
 
 
